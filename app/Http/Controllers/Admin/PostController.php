@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\Tag;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -17,7 +19,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $posts = Post::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(5);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -50,6 +52,10 @@ class PostController extends Controller
         $data['slug']=Str::slug($data['title'],'-');
         //nuova istanza
         $newPost = New Post;
+        //get imgs to put in public folder images
+        if (!empty($data['img'])) {
+          $data['img'] = Storage::disk('public')->put('images',$data['img']);
+        }
         //popolo
         $newPost->fill($data);
         //salvo
@@ -98,10 +104,17 @@ class PostController extends Controller
         //aggiunta controlli
         $request->validate([
           'title' => 'required|min:5|max:100',
-          'body' => 'required|min:5|max:500'
+          'body' => 'required|min:5|max:500',
+          'img' => 'image'
         ]);
         $data['user_id'] = Auth::id();
         $data['slug']=Str::slug($data['title'],'-');
+        //get imgs to put in public folder images
+        // if (!empty($data['img'])) {
+        //   $data['img'] = Storage::disk('public')->put('images',$data['img']);
+        // }
+        //carbon->get now
+        $data['updated_at'] = Carbon::now('Europe/Rome');
         $post->update($data); //non serve il save
         //sincronizzo i tags all update
         $post->tags()->sync($data['tags']);

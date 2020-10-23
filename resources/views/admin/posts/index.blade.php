@@ -24,11 +24,14 @@
         <form action="{{ route('posts.destroy', $post->id )}}" method="post">
           @csrf
           @method('DELETE')
-          <button type="submit" name="button" class="btn btn-primary">Delete</button>
+          <button type="submit" name="button" class="btn btn-danger">Delete</button>
         </form>
       </td>
     </tr>
     @endforeach
   </tbody>
 </table>
+<div class="mx-auto col-2">
+  {{ $posts->links() }}
+</div>
 @endsection
