@@ -41,26 +41,25 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        //aggiunta controlli
         $request->validate([
           'title' => 'required|min:5|max:100',
           'body' => 'required|min:5|max:500'
         ]);
         $data['user_id'] = Auth::id();
         $data['slug']=Str::slug($data['title'],'-');
+        //nuova istanza
         $newPost = New Post;
+        //popolo
         $newPost->fill($data);
+        //salvo
         $saved = $newPost->save();
-        // dd($saved);
+        //collego i tags
+        $newPost->tags()->attach($data['tags']);
+
         if ($saved) {
           return redirect()->route('posts.index');
         }
-        //da spostare sopra prima dell if e mettere nella edit
-        // $postNew = new Post;
-        // $postNew = fill($data);
-        // $saved = $postNew->save();
-        // $id_post = $postNew->id;
-        // $postNew->tags()->attach($data['tags']);
-
     }
 
     /**
@@ -82,7 +81,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('admin.posts.edit', compact('post'));
+      $tags = Tag::all();
+        return view('admin.posts.edit', compact('post','tags'));
     }
 
     /**
@@ -95,9 +95,21 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $data = $request->all();
+        //aggiunta controlli
+        $request->validate([
+          'title' => 'required|min:5|max:100',
+          'body' => 'required|min:5|max:500'
+        ]);
+        $data['user_id'] = Auth::id();
         $data['slug']=Str::slug($data['title'],'-');
         $post->update($data); //non serve il save
-        return redirect()->route('posts.index')->with('status','Hai modificato il post'. $post->id);
+        //sincronizzo i tags all update
+        $post->tags()->sync($data['tags']);
+
+        if ($post) {
+          return redirect()->route('posts.index')->with('status','Hai modificato il post: '." ' " .$post->title. " ' ");
+        }
+
     }
 
     /**
