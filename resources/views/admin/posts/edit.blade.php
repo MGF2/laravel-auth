@@ -9,9 +9,12 @@
         </ul>
     </div>
    @endif
-  <form action="{{route('posts.update', $post->id )}}" method="post" class="card col-5 mx-auto">
+  <form action="{{route('posts.update', $post->id )}}" method="post" enctype="multipart/form-data" class="card col-5 mx-auto">
   @csrf
   @method('PATCH')
+  <img src="{{ asset('storage/' . $post->img)}}" alt="{{ $post->slug}}" width="300px">
+    <label for="img">Immagine:</label>
+      <input type="file" name="img" accept="image/*">
     <label for="title">Titolo:</label>
       <input type="text" name="title" placeholder="Inserisci il titolo" value="{{$post->title}}">
     <label for="content">Post:</label>

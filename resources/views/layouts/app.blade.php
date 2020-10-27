@@ -39,7 +39,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                       <li class="nav-item">
-                        <a class="nav-link" href="{{ route('posts.index')}}">Post</a>
+                        <a class="nav-link" href="{{ route('guest.posts.home')}}">Post</a>
                       </li>
                         <!-- Authentication Links -->
                         @guest
@@ -58,15 +58,21 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                  <a class="dropdown-item" href="{{ route('posts.index') }}">
+                                      {{ __('Gestione Post') }}
+                                  </a>
+                                  <a class="dropdown-item" href="{{ route('posts.create') }}">
+                                      {{ __('Crea Post') }}
+                                  </a>
+                                  <a class="dropdown-item" href="{{ route('logout') }}"
+                                     onclick="event.preventDefault();
+                                                   document.getElementById('logout-form').submit();">
+                                      {{ __('Logout') }}
+                                  </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                      @csrf
+                                  </form>
                                 </div>
                             </li>
                         @endguest
@@ -76,7 +82,9 @@
         </nav>
 
         <main class="py-4">
+          <div class="container">
             @yield('content')
+          </div>
         </main>
     </div>
 </body>

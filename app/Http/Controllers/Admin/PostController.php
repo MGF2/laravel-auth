@@ -111,8 +111,18 @@ class PostController extends Controller
         $data['slug']=Str::slug($data['title'],'-');
         //get imgs to put in public folder images
         // if (!empty($data['img'])) {
+        //   if (!empty($post->img)) {
+        //     Storage::disk('public')->delete($post->img);
+        //   }
         //   $data['img'] = Storage::disk('public')->put('images',$data['img']);
         // }
+
+        if (!empty($data['img'])) {
+          if (!empty($post->img)) {
+              Storage::disk('public')->delete($post->img);
+            }
+          $data['img'] = Storage::disk('public')->put('images',$data['img']);
+        } 
         //carbon->get now
         $data['updated_at'] = Carbon::now('Europe/Rome');
         $post->update($data); //non serve il save
