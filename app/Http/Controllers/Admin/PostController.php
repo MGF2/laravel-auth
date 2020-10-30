@@ -19,7 +19,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(5);
+        // $posts = Post::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(5);
+        // dd(Auth::user()->role_id);
+        // $posts = Post::all();
+        if (Auth::user()->role->role == 'super') { //super puo amministrare tutti i post
+          $posts = Post::paginate(5); 
+        } elseif (Auth::user()->role->role == 'admin') { //admin solo i suoi
+          $posts = Post::where('user_id', Auth::id())->orderBy('created_at', 'desc')->paginate(5);
+        }
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -122,7 +129,7 @@ class PostController extends Controller
               Storage::disk('public')->delete($post->img);
             }
           $data['img'] = Storage::disk('public')->put('images',$data['img']);
-        } 
+        }
         //carbon->get now
         $data['updated_at'] = Carbon::now('Europe/Rome');
         $post->update($data); //non serve il save
