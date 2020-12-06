@@ -9,7 +9,7 @@
         </ul>
     </div>
    @endif
-  <form action="{{route('posts.update', $post->id )}}" method="post" enctype="multipart/form-data" class="card col-5 mx-auto">
+  <form action="{{route('posts.update', $post->id )}}" method="post" enctype="multipart/form-data" class="card col-lg-6 mx-auto">
   @csrf
   @method('PATCH')
   <img src="{{ asset('storage/' . $post->img)}}" alt="{{ $post->slug}}" width="300px">

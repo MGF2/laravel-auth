@@ -9,7 +9,7 @@
         </ul>
     </div>
    @endif
-  <form action="{{route('posts.store')}}" method="post"  enctype="multipart/form-data" class="card col-5 mx-auto">
+  <form action="{{route('posts.store')}}" method="post"  enctype="multipart/form-data" class="card col-lg-6 mx-auto">
   @csrf
   @method('POST')
     <label for="title">Titolo:</label>

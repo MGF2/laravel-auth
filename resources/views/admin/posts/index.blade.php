@@ -5,7 +5,7 @@
       {{ session('status')}}
     </div>
   @endif
-<table class="table mx-auto col-5">
+<table class="table mx-auto col-lg-6">
   <thead class="thead-light">
     <tr>
       <th scope="col">ID</th>

@@ -3,7 +3,7 @@
 <div class="card-deck">
   <div class="row">
     @foreach ($posts as $post)
-      <div class="col-sm-4 pt-3">
+      <div class="col-md-4 pt-3">
         <div class="card">
           {{-- prova nope
           <img src="{{(Storage::url($post->img) == '') ? 'https://picsum.photos/300/200' : Storage::url($post->img)}}" class="card-img-top" alt="{{$post->title}}"> --}}
